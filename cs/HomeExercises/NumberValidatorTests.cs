@@ -51,7 +51,7 @@ namespace HomeExercises
 
         [TestCase(1, true, "1")]
         [TestCase(2, true, "21")]
-        [TestCase(3, true, "+13")]
+        [TestCase(3, true, "13")]
         [TestCase(5, true, "514")]
         [TestCase(10, false, "-314")]
         [TestCase(2, false, "-3")]
@@ -59,8 +59,8 @@ namespace HomeExercises
         public void NumberValidator_ReturnsTrue_WithValidIntegerNumbers_WithScaleZero(int precision, bool onlyPositive,
             string number) => TestWithValidParameters(precision, 0, onlyPositive, number);
 
-        [TestCase(1, true, "+11")]
-        [TestCase(2, true, "+01")]
+        [TestCase(1, true, "11")]
+        [TestCase(2, true, "001")]
         [TestCase(3, true, "4134124")]
         [TestCase(10, false, "-031442424324243")]
         [TestCase(2, false, "-13")]
@@ -69,8 +69,10 @@ namespace HomeExercises
             bool onlyPositive, string number) => TestWithInvalidParameters(precision, 0, onlyPositive, number);
 
         [TestCase(2, 1, true, "1.1")]
-        [TestCase(4, 3, true, "+2.21")]
-        [TestCase(5, 1, true, "+51.4")]
+        [TestCase(4, 3, true, "2.21")]
+        [TestCase(4, 3, true, "0.000")]
+        [TestCase(4, 3, true, "00.00")]
+        [TestCase(5, 1, true, "51.4")]
         [TestCase(10, 5, false, "-31.414")]
         [TestCase(3, 1, false, "-3.2")]
         [TestCase(2, 1, false, "-1")]
@@ -103,6 +105,9 @@ namespace HomeExercises
         [TestCase("10 000")]
         [TestCase("10.")]
         [TestCase(".1")]
+        [TestCase("+.1")]
+        [TestCase("-.1")]
+        [TestCase("5*3")]
         public void NumberValidator_ReturnsFalse_WithWrongFormat(string number)
             => TestWithInvalidParameters(5, 4, false, number);
 
@@ -113,13 +118,17 @@ namespace HomeExercises
             => TestWithValidParameters(5, 4, false, number);
 
         [TestCase("+11")]
+        [TestCase("+1111")]
+        [TestCase("+1.111")]
+        [TestCase("-1111")]
+        [TestCase("-1.111")]
         [TestCase("-1.1")]
         [TestCase("-11")]
         [TestCase("+1.1")]
         [TestCase("1.1")]
         [TestCase("11")]
-        public void NumberValidator_CorrectWork_WithSignAndWithout(string number)
-            => TestWithValidParameters(5, 4, false, number);
+        public void NumberValidator_CorrectWork_WithAndWithoutSign(string number)
+            => TestWithValidParameters(5, 3, false, number);
 
         private static void TestWithValidParameters(int precision, int scale, bool onlyPositive,
             string number)
